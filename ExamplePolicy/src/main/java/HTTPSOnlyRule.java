@@ -12,10 +12,8 @@ public class HTTPSOnlyRule extends PolicyRule {
     @Override
     public boolean isFlaggedBy(HttpMessage msg) {
         String[] doms = msg.getRequestHeader().getURI().toString().split("://");
-        System.out.println(doms[0]+ "+++++" + doms[1]+"+++++lengte="+doms.length);
         if (doms[0].contentEquals("https")) return false;
         else return true;
-        //return msg.getRequestHeader().isSecure();
     }
 
     @Override

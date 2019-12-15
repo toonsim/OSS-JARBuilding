@@ -6,7 +6,7 @@ public class DomainRule extends PolicyRule {
 
 
     private static final String RULE_NAME = "DomainRule";
-    private String[] domains = {"twitter.com"};//,"www.twitter.com"}; //TODO: Fix the www.
+    private String[] domains = {"twitter.com"};
 
     public DomainRule(String policyName) {
         super(policyName);
@@ -15,11 +15,17 @@ public class DomainRule extends PolicyRule {
     @Override
     public boolean isFlaggedBy(HttpMessage msg) {
         for (String domain: domains) {
-            if (msg.getRequestHeader().getHostName().equals(domain)) {
+            String messageDomain = extractDomain(msg);
+            if (messageDomain.equals(domain)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private String extractDomain(HttpMessage message) {
+        String[] doms = message.getRequestHeader().getHostName().split("\\.");
+        return doms[doms.length - 2] + "." + doms[doms.length - 1];
     }
 
     @Override
