@@ -6,7 +6,7 @@ public class DomainRule extends PolicyRule {
 
 
     private static final String RULE_NAME = "DomainRule";
-    private String[] domains = {"twitter.com"};
+    private String[] domains = {"twitter.com"};//,"www.twitter.com"}; //TODO: Fix the www.
 
     public DomainRule(String policyName) {
         super(policyName);
