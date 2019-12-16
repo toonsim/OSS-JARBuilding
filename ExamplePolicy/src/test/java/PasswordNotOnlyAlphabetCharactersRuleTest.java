@@ -9,6 +9,8 @@ import java.util.TreeSet;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /** Unit test for {@link PasswordNotOnlyAlphabetCharactersRule}. */
 public class PasswordNotOnlyAlphabetCharactersRuleTest {
@@ -34,48 +36,29 @@ public class PasswordNotOnlyAlphabetCharactersRuleTest {
     }
     @Test
     public void isFlaggedBy_MessageWithPasswordField_PasswordFieldNotInList_ShouldReturnFalse(){
-        HttpMessage message = null;
+        HttpMessage message = mock(HttpMessage.class);
         HtmlParameter PasswordField = new HtmlParameter(HtmlParameter.Type.form,"passw0rd", "abd");
-        try {
-            message = new HttpMessage(new URI("http://www.google.com",true));
-            TreeSet<HtmlParameter> params = message.getFormParams();
-            params.add(PasswordField);
-            message.setFormParams(params);
-        } catch (Exception e) {
-            fail();
-        }
+        TreeSet<HtmlParameter> params = new TreeSet<HtmlParameter>();
+        params.add(PasswordField);
+        when(message.getFormParams()).thenReturn(params);
         assertFalse(charactersRule.isFlaggedBy(message));
     }
     @Test
     public void isFlaggedBy_MessageWithPasswordField_PasswordFieldInList_DoesNotContainsOnlyCharacters_ShouldReturnFalse(){
-        HttpMessage message = null;
+        HttpMessage message = mock(HttpMessage.class);
         HtmlParameter PasswordField = new HtmlParameter(HtmlParameter.Type.form,"password", "123jul4");
-        try {
-            message = new HttpMessage(new URI("http://www.google.com",true));
-            System.out.println(message.getFormParams().toString());
-        } catch (Exception e) {
-            fail();
-        }
-        System.out.println("thisssssssssssssssssssss");
-        TreeSet<HtmlParameter> params = message.getFormParams();
+        TreeSet<HtmlParameter> params = new TreeSet<HtmlParameter>();
         params.add(PasswordField);
-        message.setFormParams(params);
-        System.out.println(message.getFormParams().toString());
+        when(message.getFormParams()).thenReturn(params);
         assertFalse(charactersRule.isFlaggedBy(message));
     }
     @Test
     public void isFlaggedBy_MessageWithPasswordField_PasswordFieldInList_DoesContainsOnlyCharacters_ShouldReturnTrue(){
-        HttpMessage message = null;
+        HttpMessage message = mock(HttpMessage.class);
         HtmlParameter PasswordField = new HtmlParameter(HtmlParameter.Type.form,"password", "abcd");
-        try {
-            message = new HttpMessage(new URI("http://www.google.com",true));
-            TreeSet<HtmlParameter> params = message.getFormParams();
-            params.add(PasswordField);
-            message.setFormParams(params);
-
-        } catch (Exception e) {
-            fail();
-        }
+        TreeSet<HtmlParameter> params = new TreeSet<HtmlParameter>();
+        params.add(PasswordField);
+        when(message.getFormParams()).thenReturn(params);
         assertTrue(charactersRule.isFlaggedBy(message));
     }
 

@@ -2,6 +2,8 @@ import org.parosproxy.paros.network.HtmlParameter;
 import org.parosproxy.paros.network.HttpMessage;
 import org.zaproxy.zap.extension.policyrulescanner.PolicyRule;
 
+import java.util.TreeSet;
+
 public class PasswordNotOnlyAlphabetCharactersRule extends PolicyRule {
 
     private static final String RULE_NAME = "PasswordNotOnlyAlphabetCharactersRule";
@@ -35,7 +37,10 @@ public class PasswordNotOnlyAlphabetCharactersRule extends PolicyRule {
     }
 
     private String getFieldValue(HttpMessage msg, String fieldName) throws IllegalArgumentException {
-        for (HtmlParameter param : msg.getFormParams()) {
+        TreeSet<HtmlParameter> msgParams =  new TreeSet<HtmlParameter>();
+        msgParams.addAll(msg.getFormParams());
+        msgParams.addAll(msg.getUrlParams());
+        for (HtmlParameter param : msgParams) {
             if (param.getName().equals(fieldName)) {
                 return param.getValue();
             }

@@ -13,12 +13,12 @@ public class CookieAttributeRule extends PolicyRule {
 
     @Override
     public boolean isFlaggedBy(HttpMessage msg) {
-        for(HttpCookie cookie : msg.getResponseHeader().getHttpCookies()){
+        for(HttpCookie cookie : msg.getResponseHeader().getHttpCookies(null)){
             if (!cookie.getSecure() || !cookie.isHttpOnly()){
                 return true;
             }
             if (!(msg.getRequestHeader().getHostName().contains(cookie.getDomain()))){  //Same Site
-                return false;
+                return true;
             }
         }
 
